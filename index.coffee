@@ -1,10 +1,8 @@
 ASSERT = require 'assert'
 
-_ = require 'underscore'
-Q = require 'q'
-REQ = require 'request'
 
-
+# Constructor for the context object that test functions are bound to when
+# using ::test() to create them.
 class exports.TestContext
     constructor: ->
         @assertionCount = 0
@@ -18,7 +16,7 @@ class exports.TestContext
         expected = @expectedAssertions
         if typeof expected is 'number'
             msg = "expected #{expected} assertions but got #{actual}"
-            return ASSERT.equal(expected, actual, msg)
+            return ASSERT.equal(actual, expected, msg)
         return
 
     assert: (val, msg) ->
@@ -58,7 +56,10 @@ class exports.TestContext
         return ASSERT.doesNotThrow(block, err, msg)
 
 
-exports.T = (fn) ->
+# Create a test function that will bind to the Test class (so that `this` is an instance of the class Test).
+# The retured test function with automatically check the assertion count when done() is called.
+# GOTCHA: You must call done() to end the test, otherwise it will hang.
+exports.test = (fn) ->
     test = (done) ->
         context = new exports.TestContext()
 
@@ -72,33 +73,5 @@ exports.T = (fn) ->
     return test
 
 
-exports.request = (opts) ->
-    d = Q.defer()
-
-    defaults =
-        method: 'GET'
-        jar: off
-        followRedirect: off
-
-    opts = if typeof opts is 'string'
-        defaults.url = opts
-        defaults
-    else _.defaults(opts, defaults)
-
-    REQ opts, (err, res, body) ->
-        if err then return d.reject(err)
-
-        if opts.expectStatus and res.statusCode isnt opts.expectStatus
-                msg = "expected HTTP status code #{opts.expectStatus} "
-                msg += "but got #{res.statusCode}"
-                console.log('')
-                console.log('request error:')
-                console.log(msg)
-                console.log('')
-                console.log(res.headers)
-                console.log(body)
-                console.log('')
-                return d.reject(new Error(msg))
-
-        return d.resolve(res, body)
-    return d.promise
+# Expose Underscore as `_` and `underscore`
+exports._ = exports.underscore = require 'underscore'
