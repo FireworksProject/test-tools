@@ -32,8 +32,8 @@ Here's an example useing Mocha:
 var TEST = require('test-tools');
 var T = TEST.test;
 
-describe('something', T(function () {
-    it('should do something', function (done) {
+describe('something', function () {
+    it('should do something', T(function (done) {
         // If anything more or less than 9 assertions are run, then
         // an assertion error will be thrown.
         this.expectCount(9);
@@ -60,8 +60,8 @@ describe('something', T(function () {
         // if `done()` is not called in an asynchronous closure, like it
         // was above, then make sure it is called here instead.
         return;
-    });
-}));
+    }));
+});
 ```
 
 All the assertion methods bound to `this` are proxied to the Node.js assertion
