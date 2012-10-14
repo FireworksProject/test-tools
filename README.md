@@ -19,9 +19,9 @@ There are no command line utilities as part of this package.
 ## API
 
 ### ::test()
-A function used to create wrapped test function which can be passed into test
-frameworks that use functions which expect a function to be passed in. This is
-useful for a couple reasons:
+A function used to create wrapped test methods which can be passed into test
+frameworks that which expect functions to be passed in. This is useful for a
+couple reasons:
 
 * Bind the test function to a utility object for easy access to assertion functions.
 * Keep an assertion count and check it when the test is over.
@@ -29,7 +29,10 @@ useful for a couple reasons:
 Here's an example useing Mocha:
 
 ```JavaScript
-describe('something', function () {
+var TEST = require('test-tools');
+var T = TEST.test;
+
+describe('something', T(function () {
     it('should do something', function (done) {
         // If anything more or less than 9 assertions are run, then
         // an assertion error will be thrown.
@@ -55,11 +58,15 @@ describe('something', function () {
         this.doesNotThrow(function () { return; });
 
         // if `done()` is not called in an asynchronous closure, like it
-        // was above, then make sure it is called here
+        // was above, then make sure it is called here instead.
         return;
     });
-});
+}));
 ```
+
+All the assertion methods bound to `this` are proxied to the Node.js assertion
+methods of the same name.  For more info on their usage, consult the
+[Node.js docs](http://nodejs.org/api/assert.html).
 
 ### Underscore
 [Underscore.js](http://documentcloud.github.com/underscore/)
@@ -70,4 +77,6 @@ Run the tests with:
 
     rake test
 
-Of course you'll need to [install Rake](http://rake.rubyforge.org/) first.
+Of course you'll need to
+[install Node.js](http://nodejs.org/) and
+[Rake](http://rake.rubyforge.org/) first.

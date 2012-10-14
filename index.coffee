@@ -74,4 +74,4 @@ exports.test = (fn) ->
 
 
 # Expose Underscore as `_` and `underscore`
-exports._ = exports.underscore = require 'underscore'
+exports._ = exports.underscore = exports.Underscore = exports.UN = require 'underscore'

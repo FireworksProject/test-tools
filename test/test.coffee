@@ -268,6 +268,8 @@ describe 'expose underscore', ->
     it 'should expose `_` and `underscore`', ->
         strictEqual(TEST._, UN, '_')
         strictEqual(TEST.underscore, UN, 'underscore')
+        strictEqual(TEST.Underscore, UN, 'underscore')
+        strictEqual(TEST.UN, UN, 'underscore')
         return
 
     return
