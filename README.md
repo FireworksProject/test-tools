@@ -70,7 +70,7 @@ methods of the same name.  For more info on their usage, consult the
 
 ### Underscore
 [Underscore.js](http://documentcloud.github.com/underscore/)
-is exposed as ::_ and ::underscore
+is exposed as `_`, `Underscore`, `UN` and `underscore`.
 
 ## Testing
 Run the tests with:
